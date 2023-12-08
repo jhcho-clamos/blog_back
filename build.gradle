@@ -38,7 +38,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 //    implementation "io.springfox:springfox-swagger-ui:${springfox}"
 //    implementation "io.springfox:springfox-boot-starter:${springfox}"
     implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springfox}"

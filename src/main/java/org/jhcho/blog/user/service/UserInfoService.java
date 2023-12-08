@@ -21,7 +21,6 @@ import java.util.Optional;
 public class UserInfoService {
     private final UserInfoRepository ur;
     private final PasswordEncoder ps;
-    @Autowired
     private final UserInfoMapper um;
 
     @Transactional
@@ -35,12 +34,16 @@ public class UserInfoService {
 
     @Transactional
     public UserInfoResponse signup(UserInfoRequest userInfoRequest) {
-        userInfoRequest.setPassword(ps.encode(userInfoRequest.getPassword()));
-        Optional<UserInfo> userInfo = Optional.of(ur.save(userInfoRequest.toEntity()));
-        if (userInfo.isPresent()) {
-            return new UserInfoResponse(userInfo.get());
+        Optional<UserInfo> userExist = ur.findById(userInfoRequest.getId());
+        if(userExist.isPresent()){
+            return null;
         }
-        return null;
+        userInfoRequest.setPassword(ps.encode(userInfoRequest.getPassword()));
+        try{
+            return new UserInfoResponse(ur.save(userInfoRequest.toEntity()));
+        }catch(Exception err){
+            return null;
+        }
     }
 
     public UserInfoResponse mapperUser(String id) {
