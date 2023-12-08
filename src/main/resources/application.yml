@@ -1,0 +1,25 @@
+spring:
+  profiles:
+    active: dev
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
+    generate-ddl: false
+    properties:
+      hibernate:
+        format_sql: true
+
+mybatis:
+  # default Package location - resultType? Alias? ?????.
+  type-aliases-package: org.jhcho.blog
+  # mapper location - ?? ? xml ??? ?????.
+  mapper-locations: classpath:/mapper/*.xml
+  # column name to camel case - ?? ?? ???? CamelCase? ?? ??? ???.
+  configuration:
+    map-underscore-to-camel-case: false
+
+jwt:
+  secret: BLOG_JWT_SECRET_KEY

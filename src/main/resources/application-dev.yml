@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:8080/blog
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: 1234
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+server:
+  port: 5000
+
+springfox:
+  documentation:
+    enabled: true

@@ -1,0 +1,49 @@
+buildscript {
+    ext {
+        springfox = "2.0.2"
+    }
+}
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.0'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'org.jhcho'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.postgresql:postgresql'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    runtimeOnly 'org.postgresql:postgresql'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
+//    implementation "io.springfox:springfox-swagger-ui:${springfox}"
+//    implementation "io.springfox:springfox-boot-starter:${springfox}"
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springfox}"
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
