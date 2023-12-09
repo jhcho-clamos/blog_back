@@ -6,3 +6,6 @@ RUN apk --update add \
     && apk add vim
 
 EXPOSE 5432
+
+# volume path
+# /var/lib/postgresql/data

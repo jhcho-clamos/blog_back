@@ -49,4 +49,6 @@ public class UserInfoService {
     public UserInfoResponse mapperUser(String id) {
         return um.getUser(id);
     }
+
+
 }
