@@ -27,8 +27,7 @@ public class UserInfoService {
     public UserInfoResponse findUser(UserInfoRequest userInfoRequest) {
         Optional<UserInfo> userInfo = ur.findById(userInfoRequest.getId());
         if (userInfo.isPresent()) {
-            String encodePw = ps.encode(userInfoRequest.getPassword());
-            if (ps.matches(encodePw, userInfo.get().getPassword())) {
+            if (ps.matches(userInfoRequest.getPassword(), userInfo.get().getPassword())) {
                 return new UserInfoResponse(userInfo.get());
             } else {
                 return null;
@@ -43,7 +42,8 @@ public class UserInfoService {
         if (userExist.isPresent()) {
             return null;
         }
-        userInfoRequest.setPassword(ps.encode(userInfoRequest.getPassword()));
+        String encodePw = ps.encode(userInfoRequest.getPassword());
+        userInfoRequest.setPassword(encodePw);
         try {
             return new UserInfoResponse(ur.save(userInfoRequest.toEntity()));
         } catch (Exception err) {
