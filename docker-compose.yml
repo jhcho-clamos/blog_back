@@ -1,0 +1,11 @@
+version: '3.9'
+
+services:
+  blog_postgres:
+    image: blog_postgres
+    container_name: blog_postgres
+    restart: always
+    volumes:
+      - /data/BlogDB:/var/lib/postgresql/data
+    ports:
+      - "8000:5432"

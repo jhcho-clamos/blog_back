@@ -19,30 +19,25 @@ public class UserInfoController {
 
     private final UserInfoService userInfoService;
 
-    @GetMapping("/get/{id}")
-    public UserInfoResponse getUserInfo(@PathVariable("id") String id) {
-        return userInfoService.findUser(id);
-    }
-
     @PostMapping("/signup")
     @ResponseBody
     public ApiResponse<UserInfoResponse> getUserInfo(@RequestBody UserInfoRequest userInfoRequest) {
         UserInfoResponse userInfoResponse = userInfoService.signup(userInfoRequest);
-        if(userInfoResponse != null){
-            return new ApiResponse(StatusEnum.OK.getStatusCode(),StatusEnum.OK.getCode(), userInfoService.signup(userInfoRequest));
-        }else{
-            return new ApiResponse(StatusEnum.BAD_REQUEST.getStatusCode(),StatusEnum.BAD_REQUEST.getCode(),userInfoService.signup(userInfoRequest));
+        if (userInfoResponse != null) {
+            return new ApiResponse(StatusEnum.OK.getStatusCode(), StatusEnum.OK.getCode(), userInfoService.signup(userInfoRequest));
+        } else {
+            return new ApiResponse(StatusEnum.BAD_REQUEST.getStatusCode(), StatusEnum.BAD_REQUEST.getCode(), userInfoService.signup(userInfoRequest));
         }
 
     }
 
-    @GetMapping("/mapper/get/{id}")
-    public ApiResponse<UserInfoResponse> getUserMapper(@PathVariable("id") String id) {
-        UserInfoResponse userInfoResponse = userInfoService.mapperUser(id);
-        if(userInfoResponse != null){
-            return new ApiResponse(StatusEnum.OK.getStatusCode(),StatusEnum.OK.getCode(),userInfoResponse);
-        }else{
-            return new ApiResponse(StatusEnum.BAD_REQUEST.getStatusCode(),"사용자를 찾을 수 없습니다.",userInfoResponse);
+    @PostMapping("/login")
+    public ApiResponse<UserInfoResponse> getUserMapper(@RequestBody UserInfoRequest userInfoRequest) {
+        UserInfoResponse userInfoResponse = userInfoService.findUser(userInfoRequest);
+        if (userInfoResponse != null) {
+            return new ApiResponse(StatusEnum.OK.getStatusCode(), StatusEnum.OK.getCode(), userInfoResponse);
+        } else {
+            return new ApiResponse(StatusEnum.BAD_REQUEST.getStatusCode(), "사용자를 찾을 수 없습니다.", userInfoResponse);
         }
     }
 }

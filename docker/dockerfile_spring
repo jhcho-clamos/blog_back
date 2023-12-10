@@ -1,0 +1,7 @@
+FROM openjdk:11-jdk
+
+COPY blog.jar blog.jar
+
+CMD ["java","-jar","parcel.jar"]
+
+EXPOSE 5000

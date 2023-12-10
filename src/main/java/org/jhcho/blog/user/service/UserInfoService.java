@@ -24,10 +24,15 @@ public class UserInfoService {
     private final UserInfoMapper um;
 
     @Transactional
-    public UserInfoResponse findUser(String id) {
-        Optional<UserInfo> userInfo = ur.findById(id);
+    public UserInfoResponse findUser(UserInfoRequest userInfoRequest) {
+        Optional<UserInfo> userInfo = ur.findById(userInfoRequest.getId());
         if (userInfo.isPresent()) {
-            return new UserInfoResponse(userInfo.get());
+            String encodePw = ps.encode(userInfoRequest.getPassword());
+            if (ps.matches(encodePw, userInfo.get().getPassword())) {
+                return new UserInfoResponse(userInfo.get());
+            } else {
+                return null;
+            }
         }
         return null;
     }
@@ -35,20 +40,18 @@ public class UserInfoService {
     @Transactional
     public UserInfoResponse signup(UserInfoRequest userInfoRequest) {
         Optional<UserInfo> userExist = ur.findById(userInfoRequest.getId());
-        if(userExist.isPresent()){
+        if (userExist.isPresent()) {
             return null;
         }
         userInfoRequest.setPassword(ps.encode(userInfoRequest.getPassword()));
-        try{
+        try {
             return new UserInfoResponse(ur.save(userInfoRequest.toEntity()));
-        }catch(Exception err){
+        } catch (Exception err) {
             return null;
         }
     }
 
-    public UserInfoResponse mapperUser(String id) {
+    public UserInfoResponse loginUser(String id) {
         return um.getUser(id);
     }
-
-
 }
