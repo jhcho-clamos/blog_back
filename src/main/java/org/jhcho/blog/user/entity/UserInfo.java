@@ -25,17 +25,17 @@ public class UserInfo {
     private String password;
 
     @Column(name = "createdate")
-    private LocalDateTime createdate = LocalDateTime.now();
+    private LocalDateTime createDate = LocalDateTime.now();
 
     @NotNull
-    @Column(name = "name", nullable = true, unique = true)
+    @Column(name = "name", nullable = true)
     private String name;
 
     @Builder
     public UserInfo(String id, String password, String name) {
         this.id = id;
         this.password = password;
-        this.createdate = createdate;
+        this.createDate = createDate;
         this.name = name;
     }
 }

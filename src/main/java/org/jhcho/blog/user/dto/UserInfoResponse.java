@@ -12,11 +12,11 @@ import java.time.LocalDateTime;
 public class UserInfoResponse {
     private String id;
     private String name;
-    private LocalDateTime createdate;
+    private LocalDateTime createDate;
 
     public UserInfoResponse(UserInfo entity) {
         this.id = entity.getId();
         this.name = entity.getName();
-        this.createdate = entity.getCreatedate();
+        this.createDate = entity.getCreateDate();
     }
 }
