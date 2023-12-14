@@ -20,8 +20,8 @@ public class SecurityConfig {
 ////                .requestMatchers("/user/**").authenticated()
 //                .requestMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN")
 //                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().permitAll()
-                .and().formLogin().loginPage("/login");
+                .anyRequest().permitAll();
+//                .and().formLogin().loginPage("/login");
 
         return http.build();
     }

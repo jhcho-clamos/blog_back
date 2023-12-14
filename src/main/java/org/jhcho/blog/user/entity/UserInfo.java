@@ -5,10 +5,14 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @NoArgsConstructor
 @Entity
@@ -24,8 +28,10 @@ public class UserInfo {
     @Column(name = "password", nullable = true)
     private String password;
 
-    @Column(name = "createdate")
-    private LocalDateTime createDate = LocalDateTime.now();
+
+    @CreatedDate
+    @Column(name = "createdate", updatable = false)
+    private LocalDateTime createDate;
 
     @NotNull
     @Column(name = "name", nullable = true)
@@ -35,7 +41,6 @@ public class UserInfo {
     public UserInfo(String id, String password, String name) {
         this.id = id;
         this.password = password;
-        this.createDate = createDate;
         this.name = name;
     }
 }
