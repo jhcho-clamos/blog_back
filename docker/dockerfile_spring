@@ -1,7 +1,9 @@
-FROM openjdk:11-jdk
+FROM openjdk:17-alpine
 
 COPY blog.jar blog.jar
 
-CMD ["java","-jar","parcel.jar"]
+RUN apk --update add  && apk add vim
+
+CMD ["java","-jar","blog.jar"]
 
 EXPOSE 5000

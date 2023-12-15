@@ -22,6 +22,11 @@ public class WebSocketChatHandler extends TextWebSocketHandler {
 
     private final ChatService service;
 
+//    @Override
+//    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+//        log.info(session.toString());
+//    }
+
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
