@@ -35,7 +35,7 @@ public class ChatRoomAction {
 
     public void handleAction(WebSocketSession session, ChatMessage message, ChatService service) {
         if (message.getType().toString().equals(MessageStatus.ENTER.toString())) {
-            message.setMessage(message.getMessage() + MessageData.ENTER.getMsgType());
+            message.setMessage(message.getSender() + MessageData.ENTER.getMsgType());
             log.warn("user message enter.");
         } else if (message.getType().toString().equals(MessageStatus.TALK.toString())) {
             log.warn("user message talk.");
@@ -44,7 +44,7 @@ public class ChatRoomAction {
         } else {
             log.warn("no find message type.");
         }
-        sessions.put(message.getSender(), session);
+            sessions.put(message.getSender(), session);
         sendMessage(message, service, message.getRoomId());
     }
 
