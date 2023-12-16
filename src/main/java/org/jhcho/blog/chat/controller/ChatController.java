@@ -1,19 +1,15 @@
 package org.jhcho.blog.chat.controller;
 
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.jhcho.blog.api_response.ApiResponse;
+import org.jhcho.blog.chat.dto.ChatRoomDTO;
 import org.jhcho.blog.chat.entity.ChatMessage;
 import org.jhcho.blog.chat.entity.ChatRoom;
-import org.jhcho.blog.chat.enums.MessageData;
-import org.jhcho.blog.chat.enums.MessageStatus;
 import org.jhcho.blog.chat.service.ChatService;
 import org.jhcho.blog.entity.Message;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,11 +18,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChatController {
     private final ChatService chatService;
-    private final SimpMessageSendingOperations simpMessageSendingOperations;
 
     @GetMapping("/api/chat")
     public ResponseEntity<Message> findAllRooms() {
-        List<ChatRoom> chatRooms = chatService.findAllRooms();
+        List<ChatRoomDTO> chatRooms = chatService.findAllRooms();
         if (chatRooms != null) {
             return new ApiResponse<>(200, "ok", chatRooms).toResponseEntity();
         } else {
@@ -34,9 +29,19 @@ public class ChatController {
         }
     }
 
+    @PostMapping("/api/chat/access")
+    public ResponseEntity<Message> roomPwAccess(@RequestBody ChatRoom chatRoom) {
+        boolean accessPw = chatService.roomPwAccess(chatRoom);
+        if (accessPw) {
+            return new ApiResponse<>(200, "access", null).toResponseEntity();
+        } else {
+            return new ApiResponse<>(400, "fail", null).toResponseEntity();
+        }
+    }
+
     @PostMapping("/api/chat")
-    public ResponseEntity<Message> createRoom(@RequestParam("roomName") String roomName) {
-        ChatRoom chatRooms = chatService.createRoom(roomName);
+    public ResponseEntity<Message> createRoom(@RequestParam("roomName") String roomName, @RequestParam(value = "password", required = false) String password) {
+        ChatRoom chatRooms = chatService.createRoom(roomName, password);
         if (chatRooms != null) {
             return new ApiResponse<>(200, "ok", chatRooms).toResponseEntity();
         } else {
@@ -44,11 +49,22 @@ public class ChatController {
         }
     }
 
+//    @MessageMapping("/chat/{roomId}")
+//    @SendTo("/sub/chat/{roomId}")
+//    public ChatMessage message(ChatMessage message, @DestinationVariable("roomId") Long roomId) {
+//        message.setRoomId(roomId);
+//        ChatMessage msg = chatService.sendMessage(message);
+//        return msg;
+//    }
+
+    @GetMapping("/chat/redis/{id}")
+    public List<Object> all(@PathVariable("id") String id) {
+        return chatService.all(id);
+    }
+
     @MessageMapping("/chat/{roomId}")
-    @SendTo("/sub/chat/{roomId}")
-    public ChatMessage message(ChatMessage message, @DestinationVariable("roomId") Long roomId) {
+    public void message(ChatMessage message, @DestinationVariable("roomId") Long roomId) {
         message.setRoomId(roomId);
-        ChatMessage msg = chatService.sendMessage(message);
-        return msg;
+        chatService.sendMessageRedis(message);
     }
 }

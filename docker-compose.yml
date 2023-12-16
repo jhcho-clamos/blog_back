@@ -1,11 +1,21 @@
 version: '3.9'
 
 services:
-  blog_postgres:
-    image: blog_postgres
-    container_name: blog_postgres
+  #  blog_postgres:
+  #    image: blog_postgres
+  #    container_name: blog_postgres
+  #    restart: always
+  #    volumes:
+  #      - /data/BlogDB:/var/lib/postgresql/data
+  #    ports:
+  #      - "8000:5432"
+
+  blog_redis:
+    image: redis
+    container_name: redis
     restart: always
     volumes:
-      - /data/BlogDB:/var/lib/postgresql/data
+      - ./data/BlogRedis:/data
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
     ports:
-      - "8000:5432"
+      - "6379:6379"

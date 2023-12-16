@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @EntityListeners(AuditingEntityListener.class)
@@ -25,13 +24,21 @@ public class ChatRoom {
     @Column(name = "roomname")
     private String roomName;
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @CreatedDate
     @Column(name = "createdate")
     private LocalDateTime createDate;
 
+    @Column(name = "pwstatus")
+    private boolean pwStatus = false;
+
     @Builder
-    public ChatRoom(Long roomId, String roomName) {
+    public ChatRoom(Long roomId, String roomName, String password, boolean pwStatus) {
         this.roomId = roomId;
         this.roomName = roomName;
+        this.password = password;
+        this.pwStatus = pwStatus;
     }
 }
