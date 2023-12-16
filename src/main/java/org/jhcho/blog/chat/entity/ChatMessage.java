@@ -1,5 +1,6 @@
 package org.jhcho.blog.chat.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class ChatMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
     @Column(name = "sender")
@@ -33,7 +35,10 @@ public class ChatMessage {
     private LocalDateTime updateTime;
 
     @Column(name = "roomid")
-    private String roomId;
+    private Long roomId;
+
+    @Column(name = "roomname")
+    private String roomName;
 
     @Column(name = "message")
     private String message;
@@ -44,8 +49,10 @@ public class ChatMessage {
 
 
     @Builder
-    public ChatMessage(String sender, String roomId, String message, MessageStatus type) {
+    public ChatMessage(String sender, String roomName, LocalDateTime updateTime, Long roomId, String message, MessageStatus type) {
         this.sender = sender;
+        this.roomName = roomName;
+        this.updateTime = updateTime;
         this.roomId = roomId;
         this.message = message;
         this.type = type;

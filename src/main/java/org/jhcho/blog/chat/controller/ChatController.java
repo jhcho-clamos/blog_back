@@ -3,22 +3,28 @@ package org.jhcho.blog.chat.controller;
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.jhcho.blog.api_response.ApiResponse;
+import org.jhcho.blog.chat.entity.ChatMessage;
 import org.jhcho.blog.chat.entity.ChatRoom;
-import org.jhcho.blog.chat.service.ChatRoomAction;
+import org.jhcho.blog.chat.enums.MessageData;
+import org.jhcho.blog.chat.enums.MessageStatus;
 import org.jhcho.blog.chat.service.ChatService;
 import org.jhcho.blog.entity.Message;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/chat")
 @RequiredArgsConstructor
 public class ChatController {
     private final ChatService chatService;
+    private final SimpMessageSendingOperations simpMessageSendingOperations;
 
-    @GetMapping
+    @GetMapping("/api/chat")
     public ResponseEntity<Message> findAllRooms() {
         List<ChatRoom> chatRooms = chatService.findAllRooms();
         if (chatRooms != null) {
@@ -28,7 +34,7 @@ public class ChatController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/api/chat")
     public ResponseEntity<Message> createRoom(@RequestParam("roomName") String roomName) {
         ChatRoom chatRooms = chatService.createRoom(roomName);
         if (chatRooms != null) {
@@ -38,20 +44,11 @@ public class ChatController {
         }
     }
 
-    @PostMapping("/findroom")
-    public ResponseEntity<Message> findRoom(@RequestParam("roomId") String roomId) {
-        ChatRoomAction chatRooms = chatService.findByRoom(roomId);
-
-        if (chatRooms != null) {
-            return new ApiResponse<>(200, "ok", chatRooms).toResponseEntity();
-        } else {
-            return new ApiResponse<>(400, "해당 방을 찾을 수 없습니다.", null).toResponseEntity();
-        }
+    @MessageMapping("/chat/{roomId}")
+    @SendTo("/sub/chat/{roomId}")
+    public ChatMessage message(ChatMessage message, @DestinationVariable("roomId") Long roomId) {
+        message.setRoomId(roomId);
+        ChatMessage msg = chatService.sendMessage(message);
+        return msg;
     }
-
-    @GetMapping("/all")
-    public ResponseEntity<Message> all() {
-        return new ApiResponse<>(200, "ok", chatService.returnall()).toResponseEntity();
-    }
-
 }

@@ -18,8 +18,9 @@ import java.time.LocalDateTime;
 public class ChatRoom {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "roomid")
-    private String roomId;
+    private Long roomId;
 
     @Column(name = "roomname")
     private String roomName;
@@ -29,7 +30,7 @@ public class ChatRoom {
     private LocalDateTime createDate;
 
     @Builder
-    public ChatRoom(String roomId, String roomName) {
+    public ChatRoom(Long roomId, String roomName) {
         this.roomId = roomId;
         this.roomName = roomName;
     }
