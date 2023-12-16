@@ -30,22 +30,23 @@ public class ChatService {
     // 모든 방 검색
     public List<ChatRoomDTO> findAllRooms() {
         List<ChatRoomDTO> list = chatRoomRepository.findAll().stream()
-                .map(ChatConverter::chatRoomTochatDTO).collect(Collectors.toList());
+                .map(ChatConverter::chatRoomToChatDTO).collect(Collectors.toList());
         return list;
     }
 
 
     // 방 생성
-    public ChatRoom createRoom(String roomName, String password) {
+    public ChatRoom createRoom(ChatRoom chatRoom) {
         boolean pwStatus = false;
         String pw = "";
-        if (!password.equals("")) {
+        if (!chatRoom.getPassword().equals("")) {
             pwStatus = true;
-            pw = passwordEncoder.encode(password);
+            pw = passwordEncoder.encode(chatRoom.getPassword());
         }
-        ChatRoom chatRoom = ChatRoom.builder().roomName(roomName).password(pw).pwStatus(pwStatus).build();
-        chatRoomRepository.save(chatRoom);
-        return chatRoom;
+        ChatRoom ch = ChatRoom.builder().roomName(chatRoom.getRoomName()).password(pw)
+                .makeUser(chatRoom.getMakeUser()).pwStatus(pwStatus).build();
+        chatRoomRepository.save(ch);
+        return ch;
     }
 
     // 방 비밀번호 유효성 검사

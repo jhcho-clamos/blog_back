@@ -12,13 +12,15 @@ public class ChatRoomDTO {
     private Long roomId;
     private String roomName;
     private boolean pwStatus;
+    private String makeUser;
     private LocalDateTime createDate;
 
     @Builder
-    public ChatRoomDTO(Long roomId, String roomName, boolean pwStatus, LocalDateTime createDate) {
+    public ChatRoomDTO(Long roomId, String roomName, boolean pwStatus, String makeUser, LocalDateTime createDate) {
         this.roomId = roomId;
         this.roomName = roomName;
         this.pwStatus = pwStatus;
+        this.makeUser = makeUser;
         this.createDate = createDate;
     }
 }

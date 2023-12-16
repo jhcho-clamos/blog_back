@@ -33,15 +33,15 @@ public class ChatController {
     public ResponseEntity<Message> roomPwAccess(@RequestBody ChatRoom chatRoom) {
         boolean accessPw = chatService.roomPwAccess(chatRoom);
         if (accessPw) {
-            return new ApiResponse<>(200, "access", null).toResponseEntity();
+            return new ApiResponse<>(200, "ok", "access").toResponseEntity();
         } else {
-            return new ApiResponse<>(400, "fail", null).toResponseEntity();
+            return new ApiResponse<>(200, "fail", "fail").toResponseEntity();
         }
     }
 
     @PostMapping("/api/chat")
-    public ResponseEntity<Message> createRoom(@RequestParam("roomName") String roomName, @RequestParam(value = "password", required = false) String password) {
-        ChatRoom chatRooms = chatService.createRoom(roomName, password);
+    public ResponseEntity<Message> createRoom(@RequestBody ChatRoom chatRoom) {
+        ChatRoom chatRooms = chatService.createRoom(chatRoom);
         if (chatRooms != null) {
             return new ApiResponse<>(200, "ok", chatRooms).toResponseEntity();
         } else {

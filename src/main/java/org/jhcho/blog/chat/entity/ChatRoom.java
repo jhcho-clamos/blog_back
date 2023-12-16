@@ -34,11 +34,15 @@ public class ChatRoom {
     @Column(name = "pwstatus")
     private boolean pwStatus = false;
 
+    @Column(name = "makeuser")
+    private String makeUser;
+
     @Builder
-    public ChatRoom(Long roomId, String roomName, String password, boolean pwStatus) {
+    public ChatRoom(Long roomId, String roomName, String password, boolean pwStatus, String makeUser) {
         this.roomId = roomId;
         this.roomName = roomName;
         this.password = password;
         this.pwStatus = pwStatus;
+        this.makeUser = makeUser;
     }
 }
