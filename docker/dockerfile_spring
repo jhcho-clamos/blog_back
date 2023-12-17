@@ -1,6 +1,6 @@
 FROM openjdk:17-alpine
 
-COPY blog.jar blog.jar
+COPY ../build/libs/*SNAPSHOT.jar blog.jar
 
 RUN apk --update add  && apk add vim
 
