@@ -21,24 +21,32 @@ import java.util.UUID;
 @Entity
 @NoArgsConstructor
 @Setter
-@RedisHash(value = "chatmessage", timeToLive = 1209600)
+//@RedisHash(value = "chatmessage", timeToLive = 1209600)
+@Table(name = "chatmessage")
 public class ChatMessage implements Serializable {
 
     @Id
-    @JsonIgnore
-    private String id = UUID.randomUUID().toString();
+//    @JsonIgnore
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
+    @Column(name = "sender")
     private String sender;
 
-
+    @Column(name = "updatetime")
     private String updateTime = LocalDateTime.now().toString();
 
+    @Column(name = "roomid")
     private Long roomId;
 
+    @Column(name = "roomname")
     private String roomName;
 
+    @Column(name = "message")
     private String message;
 
+    @Column(name = "type")
     private MessageStatus type;
 
 

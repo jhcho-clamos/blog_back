@@ -1,16 +1,16 @@
-spring:
-  profiles:
-    active: dev
-  jpa:
-    database: postgresql
-    hibernate:
-      ddl-auto: none
-    show-sql: true
-    open-in-view: false
-    generate-ddl: false
-    properties:
-      hibernate:
-        format_sql: true
+spring :
+  profiles :
+    active : dev
+  jpa :
+    database : postgresql
+    hibernate :
+      ddl-auto : update
+    show-sql : true
+    open-in-view : false
+    generate-ddl : false
+    properties :
+      hibernate :
+        format_sql : true
 
 #mybatis:
 #  # default Package location - resultType? Alias? ?????.
